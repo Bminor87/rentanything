@@ -182,6 +182,6 @@ This project can be deployed to any external server like Heroku, AWS, or a perso
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/license/mit) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/Bminor87/rentanything/blob/main/LICENSE) file for details.
 
 #### This README.md was created with the help of ChatGPT
