@@ -26,13 +26,18 @@ public class Rental {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    @Column(name = "rental_start")
+    @Column(name = "rental_start", nullable = true)
     private LocalDateTime rentalStart;
 
-    @Column(name = "rental_end")
+    @Column(name = "rental_end", nullable = true)
     private LocalDateTime rentalEnd;
 
     public Rental() {
+    }
+
+    public Rental(User user, Item item) {
+        this.user = user;
+        this.item = item;
     }
 
     public Rental(User user, Item item, LocalDateTime rentalStart, LocalDateTime rentalEnd) {

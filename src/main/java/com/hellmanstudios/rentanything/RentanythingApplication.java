@@ -44,20 +44,24 @@ public class RentanythingApplication {
 			Category category4 = categoryRepository.save(new Category("Electronic Devices"));
 			Category category5 = categoryRepository.save(new Category("Games"));
 
-			itemRepository.save(new Item("Guitar", "A beautiful guitar", "image1.jpg", 10.0, category1));
+			Item guitar = itemRepository.save(new Item("Guitar", "A beautiful guitar", "image1.jpg", 10.0, category1));
 			itemRepository.save(new Item("Stradivari Violin", "A beautiful violin", "image2.jpg", 100.0, category1));
 			itemRepository.save(new Item("Steinway Piano", "A beautiful piano", "image3.jpg", 50.0, category1));
 			itemRepository.save(new Item("Drill", "A powerful drill", "image4.jpg", 5.0, category2));
 			itemRepository.save(new Item("Saw", "A powerful saw", "image5.jpg", 3.0, category2));
-			itemRepository.save(new Item("Hammer", "A powerful hammer", "image6.jpg", 2.0, category2));
+			Item hammer = itemRepository.save(new Item("Hammer", "A powerful hammer", "image6.jpg", 2.0, category2));
 			itemRepository.save(new Item("Spiderman Costume", "Full Spiderman costume", "image7.jpg", 20.0, category3));
 			itemRepository.save(new Item("Batman Costume", "Full Batman costume", "image8.jpg", 20.0, category3));
 			itemRepository.save(new Item("Princess' Dress", "Wanna play snow white?", "image9.jpg", 20.0, category3));
 			itemRepository.save(new Item("Projector", "A Projector", "image10.jpg", 15.0, category4));
 			itemRepository.save(new Item("Camera", "A Camera", "image11.jpg", 10.0, category4));
-			itemRepository.save(new Item("Chess", "A maple wood chess set", "image12.jpg", 2.0, category5));
+			Item chess = itemRepository.save(new Item("Chess", "A maple wood chess set", "image12.jpg", 2.0, category5));
 			itemRepository.save(new Item("Monopoly", "A monopoly game", "image13.jpg", 2.0, category5));
 			itemRepository.save(new Item("Playing Cards", "Playing Cards for poker etc.", "image14.jpg", 2.0, category5));
+
+			rentalRepository.save(new Rental(user, guitar));
+			rentalRepository.save(new Rental(user, hammer));
+			rentalRepository.save(new Rental(user, chess));
 
 		};
 	}
