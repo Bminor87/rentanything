@@ -42,14 +42,18 @@ The `roles` table defines the roles available in the application. The system cur
 
 The `users` table stores all user information, including admin accounts. Each user is associated with a single role (either a "User" or an "Admin").
 
-| Field      | Type         | Description                              |
-| ---------- | ------------ | ---------------------------------------- |
-| id         | int (PK)     | Unique User ID                           |
-| email      | varchar(150) | User email address                       |
-| first_name | varchar(150) | User's first name                        |
-| last_name  | varchar(150) | User's last name                         |
-| password   | varchar(250) | Encrypted password                       |
-| role_id    | int (FK)     | Foreign key to the [roles](#roles) table |
+| Field       | Type         | Description                              |
+| ----------- | ------------ | ---------------------------------------- |
+| id          | int (PK)     | Unique User ID                           |
+| email       | varchar(150) | User email address                       |
+| first_name  | varchar(150) | User's first name                        |
+| last_name   | varchar(150) | User's last name                         |
+| password    | varchar(250) | Encrypted password                       |
+| phone       | varchar(20)  | User's Phone number                      |
+| address     | varchar(250) | User's Postal Address                    |
+| city        | varchar(50)  | User's City of residence                 |
+| postal_code | varchar(5)   | User's Postal Code                       |
+| role_id     | int (FK)     | Foreign key to the [roles](#roles) table |
 
 ### `categories`
 

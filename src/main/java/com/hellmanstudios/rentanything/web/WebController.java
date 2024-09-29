@@ -33,6 +33,7 @@ public class WebController {
         log.info("GET request to /search with query: {}", query);
 
         // TODO: Implement search functionality
+        model.addAttribute("query", query);
 
         return "search_results";
     }

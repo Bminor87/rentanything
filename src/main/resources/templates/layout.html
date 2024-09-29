@@ -21,11 +21,11 @@
             </a>
           </div>
           <div class="flex mb-4 md:mb-0">
-            <form action="#" method="get" class="flex">
+            <form th:action="@{/search}" method="get" class="flex">
               <input
                 type="search"
-                name="search"
-                id="search"
+                name="query"
+                id="query"
                 class="block w-64 px-4 py-2 text-sm font-semibold leading-6 text-gray-900 placeholder-gray-500 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                 placeholder="Search items"
               />
