@@ -8,11 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.hellmanstudios.rentanything.RentanythingApplication;
+import com.hellmanstudios.rentanything.entities.Category;
 import com.hellmanstudios.rentanything.entities.Item;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hellmanstudios.rentanything.repository.ItemRepository;
+import com.hellmanstudios.rentanything.repository.CategoryRepository;
 
 import java.util.List;
 
@@ -24,6 +26,9 @@ public class WebController {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @GetMapping("*")
     public String fallback() {
         log.info("GET request to somewhere unknown");
@@ -33,7 +38,20 @@ public class WebController {
     @GetMapping("/")
     public String index(Model model) {
         log.info("GET request to /");
-        // TODO: Add categories to the model
+
+        List<Item> items = (List<Item>) itemRepository.findAll();
+        List<Category> categories = (List<Category>) categoryRepository.findAll();
+
+        model.addAttribute("items", items);
+        model.addAttribute("categories", categories);
+
+        for (Category category : categories) {
+            log.info("Category: {}", category.getName());
+            for (Item item : category.getItems()) {
+                log.info("Item: {}", item.getName());
+            }
+        }
+
         return "index";
     }
 

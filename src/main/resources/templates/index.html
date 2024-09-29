@@ -5,7 +5,43 @@
   </head>
   <body>
     <main>
-      <p class="p-4">Show navigation to categories here</p>
+      <div th:each="category : ${categories}" class="bg-white shadow-md p-4">
+        <a th:href="@{'/categories/' + ${category.id}}" class="block">
+          <h2 th:text="${category.name}" class="text-lg font-semibold mt-2">
+            Category Title
+          </h2>
+          <p
+            th:text="${category.description}"
+            class="text-sm text-gray-600 mt-2"
+          ></p>
+        </a>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div
+            th:each="item: ${category.getTop5Items()}"
+            class="bg-white shadow-md p-4"
+          >
+            <a th:href="@{'/items/' + ${item.id}}" class="block">
+              <img
+                th:src="@{'/uploads/images/' + ${item.image}}"
+                th:alt="${item.description}"
+                class="w-full h-48 object-cover"
+              />
+              <h2 th:text="${item.name}" class="text-lg font-semibold mt-2">
+                Item Title
+              </h2>
+              <p
+                th:text="${item.description}"
+                class="text-sm text-gray-600 mt-2"
+              ></p>
+              <p>
+                <span th:text="${item.price}" class="text-lg mt-2"></span>
+                &euro; / day
+              </p>
+            </a>
+          </div>
+        </div>
+      </div>
     </main>
   </body>
 </html>

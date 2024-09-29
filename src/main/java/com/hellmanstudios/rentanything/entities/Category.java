@@ -65,5 +65,17 @@ public class Category {
         this.description = description;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public List<Item> getTop5Items() {
+        return items.subList(0, Math.min(5, items.size()));
+    }
+
 
 }
