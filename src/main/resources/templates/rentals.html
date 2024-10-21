@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+  <head>
+    <title>Categories | RentAnything</title>
+  </head>
+  <body>
+    <main>
+      <p>
+        This is a list of items the USER sees. They can see their rented items,
+        but can't make any changes. Only the admin can do that. THEY CAN ONLY
+        CANCEL A RENTAL IF THE RENTAL HAS NOT YET BEEN SHIPPED.
+      </p>
+      <p>Put all details here, maybe in an accordion or something.</p>
+
+      <table class="table-auto">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Cancel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="rental : ${rentals}">
+            <td th:text="${rental.item.name}">Item</td>
+            <td th:text="${rental.item.price}">Price</td>
+            <td th:text="${rental.rentalStart}">Start Date</td>
+            <td th:text="${rental.rentalEnd}">End Date</td>
+            <td>
+              <form
+                th:action="@{'/rentals/' + ${rental.id} + '/cancel'}"
+                method="post"
+              >
+                <button type="submit">Cancel</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </body>
+</html>

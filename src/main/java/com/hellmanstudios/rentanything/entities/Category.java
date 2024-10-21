@@ -12,6 +12,8 @@ import jakarta.persistence.Table;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -73,6 +75,7 @@ public class Category {
         this.items = items;
     }
 
+    @JsonIgnore
     public List<Item> getTop5Items() {
         return items.subList(0, Math.min(5, items.size()));
     }

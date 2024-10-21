@@ -2,10 +2,10 @@ package com.hellmanstudios.rentanything.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.hellmanstudios.rentanything.RentanythingApplication;
 import com.hellmanstudios.rentanything.entities.Category;
@@ -23,11 +23,13 @@ public class WebController {
 
     private static final Logger log = LoggerFactory.getLogger(RentanythingApplication.class);
 
-    @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    public WebController(ItemRepository itemRepository, CategoryRepository categoryRepository) {
+        this.itemRepository = itemRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
     @GetMapping("*")
     public String fallback() {
