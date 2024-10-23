@@ -59,10 +59,6 @@ public class RentanythingApplication {
 			itemRepository.save(new Item("Monopoly", "A monopoly game", "image13.jpg", 2.0, category5));
 			itemRepository.save(new Item("Playing Cards", "Playing Cards for poker etc.", "image14.jpg", 2.0, category5));
 
-			rentalRepository.save(new Rental(user, guitar));
-			rentalRepository.save(new Rental(user, hammer));
-			rentalRepository.save(new Rental(user, chess));
-
 		};
 	}
 

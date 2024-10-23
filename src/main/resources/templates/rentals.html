@@ -5,40 +5,64 @@
   </head>
   <body>
     <main>
-      <p>
-        This is a list of items the USER sees. They can see their rented items,
-        but can't make any changes. Only the admin can do that. THEY CAN ONLY
-        CANCEL A RENTAL IF THE RENTAL HAS NOT YET BEEN SHIPPED.
-      </p>
-      <p>Put all details here, maybe in an accordion or something.</p>
-
-      <table class="table-auto">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Price</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Cancel</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="rental : ${rentals}">
-            <td th:text="${rental.item.name}">Item</td>
-            <td th:text="${rental.item.price}">Price</td>
-            <td th:text="${rental.rentalStart}">Start Date</td>
-            <td th:text="${rental.rentalEnd}">End Date</td>
-            <td>
-              <form
-                th:action="@{'/rentals/' + ${rental.id} + '/cancel'}"
-                method="post"
+      <div class="p-4 sm:px-6 lg:px-8">
+        <div class="sm:flex sm:items-center">
+          <div class="sm:flex-auto">
+            <h1 class="text-base font-semibold leading-6 text-gray-900">
+              <span sec:authentication="name">User</span>'s Rentals
+            </h1>
+            <p class="mt-2 text-sm text-gray-700">
+              A list of all your rented items.
+            </p>
+          </div>
+        </div>
+        <div class="mt-8 flow-root">
+          <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div
+              class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
+            >
+              <div
+                class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg"
               >
-                <button type="submit">Cancel</button>
-              </form>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <table class="min-w-full divide-y divide-gray-300">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th>Item</th>
+                      <th>Price</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Cancel</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="rental : ${rentals}">
+                      <td>
+                        <a
+                          class="text-blue-500 hover:underline"
+                          th:text="${rental.item.name}"
+                          th:href="@{'/items/' + ${rental.item.id}}"
+                          >Item</a
+                        >
+                      </td>
+                      <td th:text="${rental.item.price}">Price</td>
+                      <td th:text="${rental.rentalStart}">Start Date</td>
+                      <td th:text="${rental.rentalEnd}">End Date</td>
+                      <td>
+                        <form
+                          th:action="@{'/rentals/' + ${rental.id}}"
+                          th:method="DELETE"
+                        >
+                          <button type="submit">Cancel</button>
+                        </form>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   </body>
 </html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+  <head>
+    <title th:text="${item.name + ' | RentAnything'}"></title>
+  </head>
+  <body>
+    <main>
+      <div class="flex justify-between">
+        <h1
+          class="p-4 text-2xl font-bold leading-9 tracking-tight text-gray-900"
+          th:text="${item.name}"
+        >
+          Item Name
+        </h1>
+        <form th:action="@{/rentals}" method="post" class="m-4">
+          <input type="hidden" name="itemId" th:value="${item.id}" />
+          <button
+            th:if="${item.available}"
+            type="submit"
+            class="block rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          >
+            Rent Now!
+          </button>
+          <button
+            th:if="${!item.available}"
+            disabled
+            class="block rounded-md bg-gray-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+          >
+            Unavailable
+          </button>
+        </form>
+        <a
+          th:href="@{'/items/' + ${item.id} + '/edit'}"
+          class="block rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+          sec:authorize="hasRole('ROLE_OWNER')"
+          >Edit</a
+        >
+      </div>
+      <div class="bg-white shadow-md p-4 flex flex-col items-center">
+        <img
+          th:src="@{'/uploads/images/' + ${item.image}}"
+          th:alt="${item.description}"
+          class="w-full h-48 object-cover"
+        />
+        <p th:text="${item.description}" class="text-sm text-gray-600 mt-2"></p>
+        <p>
+          <span th:text="${item.price}" class="text-lg mt-2"></span> &euro; /
+          day
+        </p>
+      </div>
+    </main>
+  </body>
+</html>

@@ -45,6 +45,17 @@ public class ItemController {
 
         model.addAttribute("item", item);
 
+        return "item";
+    }
+
+    @GetMapping("/items/{id}/edit")
+    public String editItem(@PathVariable Long id, Model model) {
+        log.info("GET request to /items/{}", id);
+
+        Item item = itemRepository.findById(id).get();
+
+        model.addAttribute("item", item);
+
         return "edit_item";
     }
     

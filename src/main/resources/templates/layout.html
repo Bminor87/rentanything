@@ -38,7 +38,31 @@
             </form>
           </div>
           <div class="lg:flex lg:flex-1 lg:justify-end mb-4 md:mb-0">
-            <a href="/login" class="text-sm font-semibold leading-6 text-white"
+            <form
+              sec:authorize="isAuthenticated()"
+              th:action="@{/logout}"
+              method="post"
+            >
+              <div
+                id="AuthButton"
+                class="block rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold text-white"
+              >
+                <a th:href="@{/rentals}">
+                  <span sec:authentication="name"></span>
+                </a>
+                <button
+                  id="Logout"
+                  class="ml-4 rounded-md bg-red-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                  type="submit"
+                >
+                  Log out
+                </button>
+              </div>
+            </form>
+            <a
+              class="block rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+              sec:authorize="!isAuthenticated()"
+              href="/login"
               >Log in</a
             >
           </div>

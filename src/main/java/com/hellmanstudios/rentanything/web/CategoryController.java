@@ -46,6 +46,17 @@ public class CategoryController {
 
         model.addAttribute("category", category);
 
+        return "category";
+    }
+
+    @GetMapping("/categories/{id}/edit")
+    public String editCategory(@PathVariable Long id, Model model) {
+        log.info("GET request to /categories/{}", id);
+
+        Category category = categoryRepository.findById(id).get();
+
+        model.addAttribute("category", category);
+
         return "edit_category";
     }
 
