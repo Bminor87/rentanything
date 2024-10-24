@@ -5,6 +5,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,6 +43,10 @@ public class WebSecurityConfig {
         .requestMatchers(antMatcher("/css/**")).permitAll()
         .requestMatchers(antMatcher("/js/**")).permitAll()
         .requestMatchers(antMatcher("/uploads/**")).permitAll()
+        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+        .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
+        .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
+        .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
         .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
         .requestMatchers(WHITE_LIST_URLS).permitAll()
         .anyRequest().authenticated())
@@ -49,7 +54,8 @@ public class WebSecurityConfig {
         headers.frameOptions(frameOptions -> frameOptions 
                 .disable())) // for h2console
         .formLogin(formlogin -> 
-            formlogin.loginPage("/login")
+            formlogin
+            .loginPage("/login")
             .defaultSuccessUrl("/", true)
             .permitAll())
         .logout(logout -> logout.permitAll())

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+  <head>
+    <title>Admin Panel | RentAnything</title>
+  </head>
+  <body>
+    <main>
+      <div class="p-4 sm:px-6 lg:px-8">
+        <div class="sm:flex sm:items-center">
+          <div class="sm:flex-auto">
+            <h1 class="text-base font-semibold leading-6 text-gray-900">
+              Admin panel
+            </h1>
+            <p class="mt-2 text-sm text-gray-700">Choose your action</p>
+          </div>
+        </div>
+        <div class="mt-8 flow-root">
+          <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div
+              class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
+            >
+              <div
+                class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg"
+              >
+                <a href="/categories" class="block p-4 bg-white shadow-md">
+                  <h2 class="text-lg font-semibold">Categories</h2>
+                  <p class="text-sm text-gray-600 mt-2">
+                    View, edit, delete or add categories
+                  </p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
