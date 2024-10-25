@@ -2,8 +2,6 @@ package com.hellmanstudios.rentanything.entities;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.hellmanstudios.rentanything.repository.CategoryRepository;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,9 +16,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "items")
 public class Item {
-
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,13 +41,6 @@ public class Item {
     private Category category;
 
     public Item() {
-    }
-
-    public Item(String name, String description, double price, Long categoryId) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.category = categoryRepository.findById(categoryId).get();
     }
 
     public Item(String name, String description, String image, double price, Category category) {
