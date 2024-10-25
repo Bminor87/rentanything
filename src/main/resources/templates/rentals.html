@@ -31,7 +31,7 @@
                       <th>Price</th>
                       <th>Start Date</th>
                       <th>End Date</th>
-                      <th>Cancel</th>
+                      <th>Return</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -49,10 +49,11 @@
                       <td th:text="${rental.rentalEnd}">End Date</td>
                       <td>
                         <form
-                          th:action="@{'/rentals/' + ${rental.id}}"
-                          th:method="DELETE"
+                          th:if="${rental.rentalEnd} == null"
+                          th:action="@{'/rentals/' + ${rental.id} + '/return'}"
+                          th:method="POST"
                         >
-                          <button type="submit">Cancel</button>
+                          <button type="submit">Return</button>
                         </form>
                       </td>
                     </tr>

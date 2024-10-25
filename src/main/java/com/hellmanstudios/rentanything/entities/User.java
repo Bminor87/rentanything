@@ -168,6 +168,10 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    public boolean hasAuthority(String roleString) {
+        return this.role.getTitle().equalsIgnoreCase(roleString);
+    }
+
 
     // Override UserDetails methods
 

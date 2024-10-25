@@ -61,10 +61,8 @@ public class RentalController {
     }
 
     @PostMapping("/rentals")
-    public String postRental(@ModelAttribute RentalDTO rentalDTO, @AuthenticationPrincipal UserDetails userDetails) { // Using @AuthenticationPrincipal just to remind myself of an alternative way to get the current user
+    public String postRental(@ModelAttribute RentalDTO rentalDTO, @AuthenticationPrincipal User user) { // Using @AuthenticationPrincipal just to remind myself of an alternative way to get the current user
         log.info("POST request to /rentals");
-
-        User user = userRepository.findByUsername(userDetails.getUsername());
 
         Item item = itemRepository.findById(rentalDTO.itemId()).get();
 

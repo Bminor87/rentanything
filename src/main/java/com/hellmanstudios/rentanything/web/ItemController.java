@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.hellmanstudios.rentanything.RentanythingApplication;
 import com.hellmanstudios.rentanything.entities.Category;
 import com.hellmanstudios.rentanything.entities.Item;
-import com.hellmanstudios.rentanything.repository.CategoryRepository;
+import com.hellmanstudios.rentanything.repository.UserRepository;
 import com.hellmanstudios.rentanything.repository.ItemRepository;
+
+import java.security.Principal;
 
 @Controller
 public class ItemController {
@@ -19,11 +21,11 @@ public class ItemController {
     private static final Logger log = LoggerFactory.getLogger(RentanythingApplication.class);
 
     private final ItemRepository itemRepository;
-    private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
-    public ItemController(ItemRepository itemRepository, CategoryRepository categoryRepository) {
+    public ItemController(ItemRepository itemRepository, UserRepository userRepository) {
         this.itemRepository = itemRepository;
-        this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
     
     @GetMapping("/items")
@@ -38,7 +40,12 @@ public class ItemController {
     }
 
     @GetMapping("/items/{id}")
-    public String getItem(@PathVariable Long id, Model model) {
+    public String getItem(@PathVariable Long id, Principal principal, Model model) {
+
+        if (userRepository.findByUsername(principal.getName()).hasAuthority("ADMIN")) {
+            return "redirect:/items/" + id + "/edit";
+        }
+
         log.info("GET request to /items/{}", id);
 
         Item item = itemRepository.findById(id).get();
