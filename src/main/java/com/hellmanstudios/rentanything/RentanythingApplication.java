@@ -31,13 +31,13 @@ public class RentanythingApplication {
 		SpringApplication.run(RentanythingApplication.class, args);
 	}
 
-	// @Bean
-	// CommandLineRunner init(StorageService storageService) {
-	// 	return (args) -> {
-	// 		storageService.deleteAll();
-	// 		storageService.init();
-	// 	};
-	// }
+	@Bean
+	CommandLineRunner init(StorageService storageService) {
+		return (args) -> {
+			storageService.deleteAll();
+			storageService.init();
+		};
+	}
 
 	// @Bean
 	// public CommandLineRunner demo(CategoryRepository categoryRepository, ItemRepository itemRepository, UserRepository userRepository, RentalRepository rentalRepository, RoleRepository roleRepository) {

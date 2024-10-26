@@ -99,13 +99,30 @@ public class FileSystemStorageService implements StorageService {
 		FileSystemUtils.deleteRecursively(rootLocation.toFile());
 	}
 
-	@Override
-	public void init() {
-		try {
-			Files.createDirectories(rootLocation);
-		}
-		catch (IOException e) {
-			throw new StorageException("Could not initialize storage", e);
-		}
-	}
+    @Override
+    public void init() {
+        try {
+
+            Files.createDirectories(rootLocation);
+
+            Path sourceDir = Paths.get("src/main/resources/static/uploads/images");
+
+            if (Files.exists(sourceDir) && Files.isDirectory(sourceDir)) {
+                try (Stream<Path> files = Files.walk(sourceDir)) {
+                    files.filter(Files::isRegularFile)
+                         .forEach(file -> {
+                             try {
+                                 Path destinationFile = rootLocation.resolve(file.getFileName());
+                                 Files.copy(file, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+                             } catch (IOException e) {
+                                 throw new StorageException("Failed to copy file: " + file.getFileName(), e);
+                             }
+                         });
+                }
+            }
+        } catch (IOException e) {
+            throw new StorageException("Could not initialize storage", e);
+        }
+    }
+    
 }
