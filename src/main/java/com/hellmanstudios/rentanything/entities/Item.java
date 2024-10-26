@@ -106,4 +106,8 @@ public class Item {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public String priceFormatted() {
+        return String.format("%.2f", price);
+    }
 }

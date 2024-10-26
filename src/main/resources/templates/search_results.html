@@ -11,28 +11,8 @@
         <strong th:text="${query}"></strong>
       </p>
 
-      <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        <div th:each="item : ${items}" class="bg-white shadow-md p-4">
-          <a th:href="@{'/items/' + ${item.id}}" class="block">
-            <img
-              th:src="@{'/uploads/images/' + ${item.image}}"
-              th:alt="${item.description}"
-              class="w-full h-48 object-cover"
-            />
-            <h2 th:text="${item.name}" class="text-lg font-semibold mt-2">
-              Item Title
-            </h2>
-            <p
-              th:text="${item.description}"
-              class="text-sm text-gray-600 mt-2"
-            ></p>
-            <p>
-              <span th:text="${item.price}" class="text-lg mt-2"></span> &euro;
-              / day
-            </p>
-          </a>
-        </div>
-      </div>
+      <!-- Item grid -->
+      <div th:include="item_grid :: itemGrid(${items})"></div>
     </main>
   </body>
 </html>
