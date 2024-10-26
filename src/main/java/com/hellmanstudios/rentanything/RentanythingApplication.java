@@ -16,6 +16,7 @@ import com.hellmanstudios.rentanything.entities.Role;
 import com.hellmanstudios.rentanything.repository.CategoryRepository;
 import com.hellmanstudios.rentanything.repository.ItemRepository;
 import com.hellmanstudios.rentanything.repository.UserRepository;
+
 import com.hellmanstudios.rentanything.repository.RentalRepository;
 import com.hellmanstudios.rentanything.repository.RoleRepository;
 

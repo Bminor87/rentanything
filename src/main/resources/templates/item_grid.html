@@ -8,8 +8,15 @@
           class="w-full h-48 bg-gray-200 object-cover absolute top-15 left-0 opacity-50"
         ></div>
         <img
+          th:if="${!item.image.equals('')}"
           th:src="@{'/uploads/images/' + ${item.image}}"
           th:alt="${item.description}"
+          class="w-full h-48 object-cover"
+        />
+        <img
+          th:if="${item.image.equals('')}"
+          th:src="@{/uploads/images/default.png}"
+          alt="Placeholder"
           class="w-full h-48 object-cover"
         />
         <h5 class="text-xs text-gray-600 mt-">

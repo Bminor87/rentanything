@@ -1,15 +1,99 @@
 <!DOCTYPE html>
 <html th:replace="~{layout :: layout(~{::title}, ~{::main})}">
   <head>
-    <title>Categories | RentAnything</title>
+    <title
+      th:text="${editing} ? 'Edit Category | RentAnything' : 'Create Category | RentAnything'"
+    >
+      Edit Category | RentAnything
+    </title>
   </head>
   <body>
     <main>
-      <p>This is where you'll edit the category (form)</p>
-      <p>(Will there be more than just the category name?)</p>
-      <p>
-        THIS MIGHT BE UNNECESSARY, IF YOU CAN DO IT ALL IN categories.html!!!
-      </p>
+      <div class="p-4 space-y-10 divide-y divide-gray-900/10">
+        <div class="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
+          <div class="px-4 sm:px-0">
+            <h2 class="text-base font-semibold leading-7 text-gray-900">
+              Category Information
+            </h2>
+            <p class="mt-1 text-sm leading-6 text-gray-600">
+              Please fill in the required information for the category.
+            </p>
+          </div>
+
+          <form
+            th:method="POST"
+            th:action="@{/categories}"
+            th:object="${category}"
+            class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
+          >
+            <div class="px-4 py-6 sm:p-8">
+              <div
+                class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
+              >
+                <input type="hidden" th:if="${editing}" th:field="*{id}" />
+
+                <div class="sm:col-span-3">
+                  <label
+                    for="name"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >Name</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="text"
+                      th:field="*{name}"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      required
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('name')}"
+                      th:errors="*{name}"
+                      class="text-xs text-red-500"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="sm:col-span-6">
+                  <label
+                    for="description"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >Description</label
+                  >
+                  <div class="mt-2">
+                    <textarea
+                      th:field="*{description}"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      rows="3"
+                      required
+                    ></textarea>
+                    <div
+                      th:if="${#fields.hasErrors('description')}"
+                      th:errors="*{description}"
+                      class="text-xs text-red-500"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8"
+            >
+              <a
+                th:href="@{/categorylist}"
+                type="button"
+                class="text-sm font-semibold leading-6 text-gray-900"
+                >Cancel</a
+              >
+              <button
+                type="submit"
+                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </main>
   </body>
 </html>

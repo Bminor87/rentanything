@@ -82,23 +82,20 @@
               <div
                 class="w-56 shrink rounded-xl bg-white p-4 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5"
               >
+                <a href="/profile" class="block p-2 hover:text-indigo-600"
+                  >Profile</a
+                >
                 <a href="/rentals" class="block p-2 hover:text-indigo-600"
                   >My Rentals</a
                 >
                 <hr />
                 <section sec:authorize="hasRole('ROLE_ADMIN')">
                   <p class="block p-2 text-gray-600">Admin</p>
-                  <a href="#" class="block p-2 hover:text-indigo-600"
-                    >Security</a
+                  <a href="/categories" class="block p-2 hover:text-indigo-600"
+                    >Categories</a
                   >
-                  <a href="#" class="block p-2 hover:text-indigo-600"
-                    >Integrations</a
-                  >
-                  <a href="#" class="block p-2 hover:text-indigo-600"
-                    >Automations</a
-                  >
-                  <a href="#" class="block p-2 hover:text-indigo-600"
-                    >Reports</a
+                  <a href="/items" class="block p-2 hover:text-indigo-600"
+                    >Items</a
                   >
                   <hr />
                 </section>
@@ -127,6 +124,11 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const menuButton = document.getElementById("menuButton");
+
+      if (!menuButton) {
+        return;
+      }
+
       const menu = document.getElementById("menu");
 
       const toggleVisibility = () => {
@@ -167,7 +169,6 @@
       menuButton.addEventListener("click", toggleVisibility);
 
       document.addEventListener("click", (event) => {
-        console.log("clicked on", event.target);
         if (
           !menuButton.contains(event.target) &&
           !menu.contains(event.target) &&

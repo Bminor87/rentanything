@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### FILE UPLOADS ###
+src/main/resources/static/uploads/
+
 ### STS ###
 .apt_generated
 .classpath

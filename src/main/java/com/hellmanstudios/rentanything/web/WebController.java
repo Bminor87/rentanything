@@ -3,6 +3,7 @@ package com.hellmanstudios.rentanything.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -92,10 +93,57 @@ public class WebController {
     }
 
     @GetMapping("/profile")
-    public String profile() {
+    public String profile(@AuthenticationPrincipal User user, Model model) {
         log.info("GET request to /profile");
+
+        model.addAttribute("user", user);
+
         return "profile";
     }
+
+    @PostMapping("/saveprofile")
+    public String saveProfile(
+        @AuthenticationPrincipal User user,
+        @ModelAttribute User updatedUser,
+        @RequestParam(required = false) String oldPassword,
+        @RequestParam(required = false) String newPassword,
+        @RequestParam(required = false) String confirmPassword,
+        Model model) {
+        
+        log.info("POST request to /saveprofile");
+        log.info("User: {}", user);
+        log.info("Updated user: {}", updatedUser);
+
+        user.setFirstName(updatedUser.getFirstName());
+        user.setLastName(updatedUser.getLastName());
+        user.setEmail(updatedUser.getEmail());
+        user.setPhone(updatedUser.getPhone());
+        user.setAddress(updatedUser.getAddress());
+        user.setPostalCode(updatedUser.getPostalCode());
+        user.setCity(updatedUser.getCity());
+
+        // Update password if requested
+        if (!oldPassword.isEmpty() && !newPassword.isEmpty() && !confirmPassword.isEmpty()) {
+
+            if (!BCrypt.checkpw(oldPassword, user.getPassword())) {
+                model.addAttribute("passwordError", "Old password is incorrect.");
+                return "profile";
+            }
+
+            if (!newPassword.equals(confirmPassword)) {
+                model.addAttribute("passwordError", "New password and confirmation do not match.");
+                return "profile";
+            }
+
+            user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+        }
+
+        userRepository.save(user);
+        model.addAttribute("saved", true);
+
+        return "redirect:/profile";
+    }
+
 
     @GetMapping("/register")
     public String register() {

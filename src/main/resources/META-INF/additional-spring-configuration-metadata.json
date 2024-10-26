@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "upload.dir",
+      "type": "java.lang.String",
+      "description": "The default upload directory for uploaded image files."
+    }
+  ]
+}

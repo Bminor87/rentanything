@@ -1,11 +1,279 @@
 <!DOCTYPE html>
 <html th:replace="~{layout :: layout(~{::title}, ~{::main})}">
   <head>
-    <title>Profile | RentAnything</title>
+    <title>Edit Profile | RentAnything</title>
   </head>
   <body>
     <main>
-      <p class="p-4">Show user profile (rented items etc.) here.</p>
+      <div class="p-4 space-y-10 divide-y divide-gray-900/10">
+        <div class="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
+          <div class="px-4 sm:px-0">
+            <h2 class="text-base font-semibold leading-7 text-gray-900">
+              User Profile
+            </h2>
+            <p class="mt-1 text-sm leading-6 text-gray-600">
+              Please fill in the required information for your profile.
+            </p>
+          </div>
+
+          <form
+            method="post"
+            th:action="@{/saveprofile}"
+            th:object="${user}"
+            class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
+          >
+            <div class="px-4 py-6 sm:p-8">
+              <div
+                class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
+              >
+                <input type="hidden" th:field="*{id}" />
+
+                <div class="sm:col-span-3">
+                  <label
+                    for="username"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >Username</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="text"
+                      th:field="*{username}"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      required
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('username')}"
+                      th:errors="*{username}"
+                      class="text-xs text-red-500"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label
+                    for="email"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >Email</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="email"
+                      th:field="*{email}"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      required
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('email')}"
+                      th:errors="*{email}"
+                      class="text-xs text-red-500"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label
+                    for="firstName"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >First Name</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="text"
+                      th:field="*{firstName}"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      required
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('firstName')}"
+                      th:errors="*{firstName}"
+                      class="text-xs text-red-500"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label
+                    for="lastName"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >Last Name</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="text"
+                      th:field="*{lastName}"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      required
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('lastName')}"
+                      th:errors="*{lastName}"
+                      class="text-xs text-red-500"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label
+                    for="phone"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >Phone</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="tel"
+                      th:field="*{phone}"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('phone')}"
+                      th:errors="*{phone}"
+                      class="text-xs text-red-500"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label
+                    for="address"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >Address</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="text"
+                      th:field="*{address}"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('address')}"
+                      th:errors="*{address}"
+                      class="text-xs text-red-500"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label
+                    for="postalCode"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >Postal Code</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="text"
+                      th:field="*{postalCode}"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('postalCode')}"
+                      th:errors="*{postalCode}"
+                      class="text-xs text-red-500"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label
+                    for="city"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >City</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="text"
+                      th:field="*{city}"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('city')}"
+                      th:errors="*{city}"
+                      class="text-xs text-red-500"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Password Change Section -->
+            <div
+              class="px-4 py-6 sm:p-8 bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl"
+            >
+              <h3 class="text-base font-semibold leading-7 text-gray-900">
+                Change Password
+              </h3>
+              <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                <div class="sm:col-span-3">
+                  <label
+                    for="oldPassword"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >Old Password</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="password"
+                      name="oldPassword"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label
+                    for="newPassword"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >New Password</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="password"
+                      name="newPassword"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label
+                    for="confirmPassword"
+                    class="block text-sm font-medium leading-6 text-gray-900"
+                    >Confirm New Password</label
+                  >
+                  <div class="mt-2">
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                  <div class="mt-2">
+                    <div th:if="${passwordError}" class="text-xs text-red-500">
+                      <p th:text="${passwordError}"></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8"
+            >
+              <a
+                th:href="@{/profile}"
+                type="button"
+                class="text-sm font-semibold leading-6 text-gray-900"
+                >Cancel</a
+              >
+              <button
+                type="submit"
+                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </main>
   </body>
 </html>
