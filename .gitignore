@@ -6,6 +6,7 @@ target/
 
 ### FILE UPLOADS ###
 src/main/resources/static/uploads/
+.env
 
 ### STS ###
 .apt_generated
