@@ -1,5 +1,8 @@
 package com.hellmanstudios.rentanything.entities;
 
+import org.hibernate.validator.constraints.Range;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "items")
@@ -22,18 +26,21 @@ public class Item {
 
     @Column(name = "description", nullable = true)
     private String description;
-
+    
+    @Pattern(regexp = "^$|^[\\w\\s-]+\\.(?i)(jpg|gif|png)$", message = "Invalid image URL")
     @Column(name = "image", nullable = true)
     private String image;
+       
 
+    @Range(min=0, max=9999) 
     @Column(name = "price")
     private double price = 0.0;
 
     @Column(name = "available")
     private boolean available = true;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "category_id", nullable = true)
     private Category category;
 
     public Item() {

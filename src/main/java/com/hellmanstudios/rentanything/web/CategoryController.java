@@ -2,6 +2,7 @@ package com.hellmanstudios.rentanything.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +18,13 @@ import com.hellmanstudios.rentanything.repository.CategoryRepository;
 import com.hellmanstudios.rentanything.repository.ItemRepository;
 import com.hellmanstudios.rentanything.repository.UserRepository;
 
+import jakarta.validation.Valid;
+
 import java.security.Principal;
 import java.util.List;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -89,18 +93,28 @@ public class CategoryController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("categories")
-    public String saveCategory(@ModelAttribute Category editedCategory) {
+    public String saveCategory(@Valid @ModelAttribute("category") Category editedCategory, RedirectAttributes redirectAttributes ,Model model) {
 
-        Category category = new Category();
-
-        if (editedCategory.getId() != null) {
-            category = categoryRepository.findById(editedCategory.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + editedCategory.getId()));
-        } 
+        Category category = (editedCategory.getId() != null) 
+        ? categoryRepository.findById(editedCategory.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + editedCategory.getId())) 
+        : new Category();
 
         category.setName(editedCategory.getName());
         category.setDescription(editedCategory.getDescription());
+                
+        try {
 
-        categoryRepository.save(category);
+            categoryRepository.save(category);
+
+        } catch (DataIntegrityViolationException e) {
+            
+            model.addAttribute("nameError", e.getMessage());
+
+            model.addAttribute("category", editedCategory);
+            return "edit_item";
+        }
+        
+        redirectAttributes.addFlashAttribute("message", "category saved successfully!");
 
         return "redirect:/categories";
     }

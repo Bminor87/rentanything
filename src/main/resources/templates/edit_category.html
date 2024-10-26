@@ -46,8 +46,8 @@
                       required
                     />
                     <div
-                      th:if="${#fields.hasErrors('name')}"
-                      th:errors="*{name}"
+                      th:if="${nameError}"
+                      th:text="${nameError}"
                       class="text-xs text-red-500"
                     ></div>
                   </div>

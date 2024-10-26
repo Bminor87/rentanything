@@ -12,7 +12,7 @@
       </p>
 
       <!-- Item grid -->
-      <div th:insert="item_grid :: itemGrid(${items})"></div>
+      <div th:insert="~{item_grid :: itemGrid(${items})}"></div>
     </main>
   </body>
 </html>

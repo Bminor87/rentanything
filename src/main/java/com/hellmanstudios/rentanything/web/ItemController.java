@@ -3,10 +3,12 @@ package com.hellmanstudios.rentanything.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,11 +16,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hellmanstudios.rentanything.RentanythingApplication;
 import com.hellmanstudios.rentanything.entities.Category;
 import com.hellmanstudios.rentanything.entities.Item;
 import com.hellmanstudios.rentanything.repository.UserRepository;
+
+import jakarta.validation.Valid;
+
 import com.hellmanstudios.rentanything.repository.CategoryRepository;
 import com.hellmanstudios.rentanything.repository.ItemRepository;
 
@@ -111,14 +117,27 @@ public class ItemController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/items")
-    public String saveItem(@ModelAttribute Item editedItem, @RequestParam(required = false) MultipartFile uploadedImage) {
+    public String saveItem(@Valid @ModelAttribute("item") Item editedItem, BindingResult bindingResult, @RequestParam(required = false) MultipartFile uploadedImage, RedirectAttributes redirectAttributes, Model model) {
         log.info("POST request to /items");
 
-        Item item = new Item();
+        if (bindingResult.hasErrors()) {
+            log.warn("Validation errors: {}", bindingResult.getAllErrors());
+            model.addAttribute("editing", editedItem.getId() != null);
+            model.addAttribute("categories", categoryRepository.findAll());
+            model.addAttribute("item", editedItem);
+            
+            bindingResult.getFieldErrors().forEach(error -> {
+                String fieldName = error.getField() + "Error";
+                String errorMessage = error.getDefaultMessage();
+                model.addAttribute(fieldName, errorMessage);
+            });
 
-        if (editedItem.getId() != null) {
-            item = itemRepository.findById(editedItem.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid item ID"));
+            return "edit_item";
         }
+
+        Item item = editedItem.getId() != null ? 
+        itemRepository.findById(editedItem.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid item ID")) 
+        : new Item();
 
         item.setName(editedItem.getName());
         item.setDescription(editedItem.getDescription());
@@ -140,7 +159,23 @@ public class ItemController {
             log.warn("No image uploaded or the file was empty.");
         }
 
-        itemRepository.save(item);
+        try {
+            itemRepository.save(item);
+        } catch (DataIntegrityViolationException e) {
+
+            log.error("Constraint violation: {}", e.getMessage());
+
+            if (e.getMessage().contains("(name)")) {
+                model.addAttribute("nameError", "This username is already taken.");
+            }
+
+            model.addAttribute("editing", editedItem.getId() != null);
+            model.addAttribute("categories", categoryRepository.findAll());
+            model.addAttribute("item", editedItem);
+            return "edit_item";
+        }
+
+        redirectAttributes.addFlashAttribute("message", "Item saved successfully!");
 
         return "redirect:/items";
     }

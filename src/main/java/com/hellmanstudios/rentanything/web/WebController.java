@@ -2,10 +2,13 @@ package com.hellmanstudios.rentanything.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hellmanstudios.rentanything.repository.ItemRepository;
 import com.hellmanstudios.rentanything.repository.RoleRepository;
 import com.hellmanstudios.rentanything.repository.UserRepository;
+
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+
 import com.hellmanstudios.rentanything.repository.CategoryRepository;
 
 import java.util.List;
@@ -28,11 +35,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-
+@Validated
 @Controller
 public class WebController {
 
-    private static final Logger log = LoggerFactory.getLogger(RentanythingApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(WebController.class);
 
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
@@ -146,26 +153,56 @@ public class WebController {
 
 
     @GetMapping("/register")
-    public String register() {
+    public String register(Model model) {
         log.info("GET request to /register");
+
+        model.addAttribute("user", new User());
+
         return "register";
     }
-
+ 
     @PostMapping("/register")
-    public String postUser(@ModelAttribute User user, Model model) {
+    public String postUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model, @RequestParam(required = true) String confirmPassword) {
         log.info("POST request to /register");
 
         log.info("User: {}", user);
+
+        if (user.getPassword().isEmpty() || !user.getPassword().equals(confirmPassword)) {
+            model.addAttribute("user", user);
+            model.addAttribute("passwordError", "Password and confirmation do not match.");
+            return "register";
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", user);
+            return "register";
+        }
 
         user.setRole(roleRepository.findById(1L).get());
 
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+
+            log.error("Constraint violation: {}", e.getMessage());
+
+            if (e.getMessage().contains("(username)")) {
+                model.addAttribute("usernameError", "This username is already taken.");
+            }
+            if (e.getMessage().contains("(email)")) {
+                model.addAttribute("emailError", "This email is already registered.");
+            }
+
+            model.addAttribute("user", user);
+
+            return "register";
+        }
 
         model.addAttribute("registered", true);
 
-        return "redirect:/login";
+        return "login";
     }
     
 

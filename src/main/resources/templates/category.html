@@ -13,7 +13,7 @@
       </h1>
 
       <!-- Item grid -->
-      <div th:insert="item_grid :: itemGrid(${category.items})"></div>
+      <div th:insert="~{item_grid :: itemGrid(${category.items})}"></div>
     </main>
   </body>
 </html>

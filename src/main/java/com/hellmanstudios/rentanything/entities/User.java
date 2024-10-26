@@ -11,7 +11,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,13 +28,17 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @NotBlank(message = "Username is mandatory")
     @Column(name = "username", unique = true)
     private String username;
 
+    @NotBlank(message = "Password cannot be empty")
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email")
+    @NotBlank(message = "Email is mandatory")
+    @Email(message = "Email is not valid")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "first_name", nullable = true)
@@ -39,6 +47,7 @@ public class User implements UserDetails {
     @Column(name = "last_name", nullable = true)
     private String lastName;
 
+    @Length(min = 10, max = 15, message = "Phone number must be 10-15 digits")
     @Column(name = "phone", nullable = true)
     private String phone;
 

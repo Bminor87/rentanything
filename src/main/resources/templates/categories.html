@@ -15,6 +15,16 @@
               A list of all categories available.
             </p>
           </div>
+
+          <div class="sm:flex-auto mt-5 sm:mt-0 sm:ml-4">
+            <p
+              th:if="${message}"
+              class="w-1/2 items-center my-4 px-4 py-2 text-sm font-semibold text-green-600 bg-green-100 border border-transparent rounded-md shadow-sm"
+            >
+              <span th:text="${message}"></span>
+            </p>
+          </div>
+
           <a
             href="/categories/create"
             class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500"
