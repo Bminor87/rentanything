@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class FileSystemStorageService implements StorageService {
 
 	private final Path rootLocation;
 
+
 	@Autowired
 	public FileSystemStorageService(StorageProperties properties) {
         
@@ -31,6 +33,7 @@ public class FileSystemStorageService implements StorageService {
         }
 
 		this.rootLocation = Paths.get(properties.getLocation());
+
 	}
 
 	@Override

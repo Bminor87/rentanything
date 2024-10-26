@@ -44,12 +44,15 @@ public class ItemController {
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
 
-    @Value("${upload.dir}")
     private String UPLOAD_DIR;
 
     public ItemController(ItemRepository itemRepository, CategoryRepository categoryRepository) {
         this.itemRepository = itemRepository;
         this.categoryRepository = categoryRepository;
+
+        String homeDir = System.getenv("HOME");
+
+        UPLOAD_DIR = homeDir + "/uploads/";
     }
     
     @PreAuthorize("hasRole('ADMIN')")
