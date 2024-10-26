@@ -34,8 +34,13 @@ public class RentanythingApplication {
 	@Bean
 	CommandLineRunner init(StorageService storageService) {
 		return (args) -> {
-			storageService.deleteAll();
-			storageService.init();
+			//storageService.deleteAll();
+			try {
+				storageService.init();
+			} catch (Exception e) {
+				log.error("Error initializing storage", e);
+			}
+			
 		};
 	}
 
