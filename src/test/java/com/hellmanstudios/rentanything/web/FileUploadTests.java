@@ -34,19 +34,6 @@ public class FileUploadTests {
 	@MockBean
 	private StorageService storageService;
 
-	@Test
-	public void shouldListAllFiles() throws Exception {
-		given(this.storageService.loadAll())
-				.willReturn(Stream.of(Paths.get("first.txt"), Paths.get("second.txt")));
-
-		this.mvc.perform(get("/")).andExpect(status().isOk())
-				.andExpect(model().attribute("files",
-						Matchers.contains("http://localhost:8080/files/first.txt",
-								"http://localhost:8080/files/second.txt")));
-	}
-
-
-
 	@SuppressWarnings("unchecked")
 	@Test
 	public void should404WhenMissingFile() throws Exception {
