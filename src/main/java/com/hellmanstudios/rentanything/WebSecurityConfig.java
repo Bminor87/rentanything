@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -55,9 +56,9 @@ public class WebSecurityConfig {
                 .disable())) // for h2console
         .formLogin(formlogin -> 
             formlogin
-            .loginPage("/login")
-            .defaultSuccessUrl("/", true)
-            .permitAll())
+                .loginPage("/login")
+                .successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
+                .permitAll())
         .logout(logout -> logout.permitAll())
         .csrf(csrf -> csrf.disable()); // not for production, just for development
         return http.build();

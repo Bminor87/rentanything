@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "rentals")
@@ -85,6 +86,22 @@ public class Rental {
 
     public void setRentalEnd(LocalDateTime rentalEnd) {
         this.rentalEnd = rentalEnd;
+    }
+
+    public String getRentalStartFormatted() {
+        if (rentalStart == null) {
+            return "";
+        }
+
+        return rentalStart.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+
+    public String getRentalEndFormatted() {
+        if (rentalEnd == null) {
+            return "";
+        }
+
+        return rentalEnd.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
     
 }

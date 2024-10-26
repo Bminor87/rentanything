@@ -11,6 +11,7 @@ import java.util.List;
 public interface ItemRepository extends CrudRepository<Item, Long> {
     List<Item> findByCategory(Category category);
 
-    @Query(value= "SELECT * FROM items WHERE description LIKE :query OR name LIKE :query", nativeQuery = true)
-    List<Item> search(@Param("query") String query);
+    @Query("SELECT i FROM Item i WHERE i.name LIKE %:search% OR i.description LIKE %:search%")
+    List<Item> search(@Param("search") String search);
+
 }

@@ -42,7 +42,7 @@ public class ItemController {
     @GetMapping("/items/{id}")
     public String getItem(@PathVariable Long id, Principal principal, Model model) {
 
-        if (userRepository.findByUsername(principal.getName()).hasAuthority("ADMIN")) {
+        if (principal != null && userRepository.findByUsername(principal.getName()).hasAuthority("ADMIN")) {
             return "redirect:/items/" + id + "/edit";
         }
 
