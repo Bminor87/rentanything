@@ -5,7 +5,7 @@ target/
 !**/src/test/**/target/
 
 ### FILE UPLOADS ###
-
+src/main/resources/static/uploads/
 .env
 
 ### STS ###
