@@ -44,6 +44,8 @@ public class WebSecurityConfig {
         .requestMatchers(antMatcher("/css/**")).permitAll()
         .requestMatchers(antMatcher("/js/**")).permitAll()
         .requestMatchers(antMatcher("/uploads/**")).permitAll()
+        .requestMatchers(antMatcher("/files/**")).permitAll()
+        .requestMatchers(antMatcher("/storage/**")).permitAll()
         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
         .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
         .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")

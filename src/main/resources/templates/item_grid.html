@@ -9,13 +9,13 @@
         ></div>
         <img
           th:if="${!item.image.equals('')}"
-          th:src="@{'/uploads/images/' + ${item.image}}"
+          th:src="@{'/files/' + ${item.image}}"
           th:alt="${item.description}"
           class="w-full h-48 object-cover"
         />
         <img
           th:if="${item.image.equals('')}"
-          th:src="@{/uploads/images/default.png}"
+          th:src="@{/files/default.png}"
           alt="Placeholder"
           class="w-full h-48 object-cover"
         />

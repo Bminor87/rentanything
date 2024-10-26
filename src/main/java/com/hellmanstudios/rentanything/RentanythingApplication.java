@@ -2,7 +2,7 @@ package com.hellmanstudios.rentanything;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -16,11 +16,13 @@ import com.hellmanstudios.rentanything.entities.Role;
 import com.hellmanstudios.rentanything.repository.CategoryRepository;
 import com.hellmanstudios.rentanything.repository.ItemRepository;
 import com.hellmanstudios.rentanything.repository.UserRepository;
-
+import com.hellmanstudios.rentanything.storage.StorageProperties;
+import com.hellmanstudios.rentanything.storage.StorageService;
 import com.hellmanstudios.rentanything.repository.RentalRepository;
 import com.hellmanstudios.rentanything.repository.RoleRepository;
 
 @SpringBootApplication
+@EnableConfigurationProperties(StorageProperties.class)
 public class RentanythingApplication {
 
 	private static final Logger log = LoggerFactory.getLogger(RentanythingApplication.class);
@@ -28,6 +30,14 @@ public class RentanythingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RentanythingApplication.class, args);
 	}
+
+	// @Bean
+	// CommandLineRunner init(StorageService storageService) {
+	// 	return (args) -> {
+	// 		storageService.deleteAll();
+	// 		storageService.init();
+	// 	};
+	// }
 
 	// @Bean
 	// public CommandLineRunner demo(CategoryRepository categoryRepository, ItemRepository itemRepository, UserRepository userRepository, RentalRepository rentalRepository, RoleRepository roleRepository) {
