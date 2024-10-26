@@ -167,8 +167,9 @@ public class ItemController {
             Files.copy(uploadedImage.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             return filename;
         } catch (IOException e) {
-            log.error("Error saving file: {}", e.getMessage());
-            return "default.png";
+            throw new RuntimeException("Failed to save uploaded image", e);
+            //log.error("Error saving file: {}", e.getMessage());
+           //return "default.png";
         }
     }
     
