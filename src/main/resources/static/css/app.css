@@ -3,3 +3,7 @@
   font-size: 1.5em;
   color: #cbe9cb;
 }
+
+.hidden {
+  display: none;
+}

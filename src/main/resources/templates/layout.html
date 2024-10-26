@@ -37,37 +37,83 @@
               </button>
             </form>
           </div>
-          <div class="lg:flex lg:flex-1 lg:justify-end mb-4 md:mb-0">
-            <form
-              sec:authorize="isAuthenticated()"
-              th:action="@{/logout}"
-              method="post"
-            >
-              <div
-                id="AuthButton"
-                class="block rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold text-white"
-              >
-                <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">
-                  <span sec:authentication="name"></span>
-                </a>
-                <a sec:authorize="!hasRole('ADMIN')" th:href="@{/rentals}">
-                  <span sec:authentication="name"></span>
-                </a>
-                <button
-                  id="Logout"
-                  class="ml-4 rounded-md bg-red-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-                  type="submit"
-                >
-                  Log out
-                </button>
-              </div>
-            </form>
+
+          <div
+            sec:authorize="!isAuthenticated()"
+            class="lg:flex lg:flex-1 lg:justify-end mb-4 md:mb-0"
+          >
             <a
               class="block rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-              sec:authorize="!isAuthenticated()"
               href="/login"
               >Log in</a
             >
+          </div>
+
+          <div
+            sec:authorize="isAuthenticated()"
+            class="lg:flex lg:flex-1 lg:justify-end mb-4 md:mb-0 relative"
+          >
+            <button
+              id="menuButton"
+              type="button"
+              class="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-white"
+              aria-expanded="false"
+            >
+              <span sec:authentication="name"></span>
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+                data-slot="icon"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+
+            <div
+              id="menu"
+              class="hidden absolute left-1/2 z-10 mt-5 flex w-screen max-w-min -translate-x-1/2 px-4"
+            >
+              <div
+                class="w-56 shrink rounded-xl bg-white p-4 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5"
+              >
+                <a href="/rentals" class="block p-2 hover:text-indigo-600"
+                  >My Rentals</a
+                >
+                <hr />
+                <section sec:authorize="hasRole('ROLE_ADMIN')">
+                  <p class="block p-2 text-gray-600">Admin</p>
+                  <a href="#" class="block p-2 hover:text-indigo-600"
+                    >Security</a
+                  >
+                  <a href="#" class="block p-2 hover:text-indigo-600"
+                    >Integrations</a
+                  >
+                  <a href="#" class="block p-2 hover:text-indigo-600"
+                    >Automations</a
+                  >
+                  <a href="#" class="block p-2 hover:text-indigo-600"
+                    >Reports</a
+                  >
+                  <hr />
+                </section>
+
+                <form th:action="@{/logout}" method="post" class="mt-2">
+                  <button
+                    id="Logout"
+                    class="ml-1 rounded-md bg-red-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                    type="submit"
+                  >
+                    Log out
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
         </nav>
       </header>
@@ -77,4 +123,59 @@
       </main>
     </div>
   </body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const menuButton = document.getElementById("menuButton");
+      const menu = document.getElementById("menu");
+
+      const toggleVisibility = () => {
+        if (menu.classList.contains("hidden")) {
+          menu.classList.remove("hidden");
+          menu.classList.add(
+            "transition",
+            "ease-out",
+            "duration-200",
+            "opacity-0",
+            "translate-y-1"
+          );
+
+          requestAnimationFrame(() => {
+            menu.classList.remove("opacity-0", "translate-y-1");
+            menu.classList.add("opacity-100", "translate-y-0");
+          });
+        } else {
+          menu.classList.add(
+            "transition",
+            "ease-in",
+            "duration-150",
+            "opacity-100",
+            "translate-y-0"
+          );
+
+          requestAnimationFrame(() => {
+            menu.classList.remove("opacity-100", "translate-y-0");
+            menu.classList.add("opacity-0", "translate-y-1");
+          });
+
+          setTimeout(() => {
+            menu.classList.add("hidden");
+          }, 150);
+        }
+      };
+
+      menuButton.addEventListener("click", toggleVisibility);
+
+      document.addEventListener("click", (event) => {
+        console.log("clicked on", event.target);
+        if (
+          !menuButton.contains(event.target) &&
+          !menu.contains(event.target) &&
+          !menu.classList.contains("hidden")
+        ) {
+          toggleVisibility();
+        }
+      });
+    });
+  </script>
 </html>
