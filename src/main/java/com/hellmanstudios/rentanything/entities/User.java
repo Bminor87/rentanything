@@ -3,6 +3,7 @@ package com.hellmanstudios.rentanything.entities;
 import java.util.Collection;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.CascadeType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
@@ -30,10 +30,10 @@ public class User implements UserDetails {
     private Long id;
     
     @NotBlank(message = "Username is mandatory")
+    @Length(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     @Column(name = "username", unique = true)
     private String username;
 
-    @NotBlank(message = "Password cannot be empty")
     @Column(name = "password")
     private String password;
 
@@ -42,27 +42,21 @@ public class User implements UserDetails {
     @Column(name = "email", unique = true)
     private String email;
 
-    @Max(value = 50, message = "First name must be less than 50 characters")
     @Column(name = "first_name", nullable = true)
     private String firstName;
 
-    @Max(value = 50, message = "Last name must be less than 50 characters")
     @Column(name = "last_name", nullable = true)
     private String lastName;
-    
-    @Length(min = 10, max = 15, message = "Phone number must be 10-15 digits")
+
     @Column(name = "phone", nullable = true)
     private String phone;
 
-    @Max(value = 100, message = "Address must be less than 100 characters")
     @Column(name = "address", nullable = true)
     private String address;
 
-    @Max(value = 50, message = "City must be less than 50 characters")
     @Column(name = "city", nullable = true)
     private String city;
 
-    @Max(value = 10, message = "Postal code must be less than 10 characters")
     @Column(name = "postal_code", nullable = true)
     private String postalCode;
 
