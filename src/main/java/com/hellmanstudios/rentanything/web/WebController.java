@@ -2,18 +2,19 @@ package com.hellmanstudios.rentanything.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import com.hellmanstudios.rentanything.RentanythingApplication;
 import com.hellmanstudios.rentanything.entities.Category;
 import com.hellmanstudios.rentanything.entities.Item;
 import com.hellmanstudios.rentanything.entities.User;
@@ -32,7 +33,6 @@ import com.hellmanstudios.rentanything.repository.CategoryRepository;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
@@ -111,23 +111,22 @@ public class WebController {
 
     @PostMapping("/profile")
     public String saveProfile(
-        @AuthenticationPrincipal User user,
-        @Valid @ModelAttribute("user") User updatedUser,
+        @Valid @ModelAttribute User updatedUser,
         BindingResult bindingResult,
         @RequestParam(required = false) String oldPassword,
         @RequestParam(required = false) String newPassword,
         @RequestParam(required = false) String confirmPassword,
+        @AuthenticationPrincipal User user,
         Model model) {
         
         log.info("POST request to /profile");
-        log.info("User: {}", user);
-        log.info("Updated user: {}", updatedUser);
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("user", updatedUser);
+            //model.addAttribute("user", updatedUser);
             return "profile";
         }
 
+        user.setUsername(updatedUser.getUsername());
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
         user.setEmail(updatedUser.getEmail());
@@ -218,5 +217,18 @@ public class WebController {
         log.info("GET request to /login");
         return "login";
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String handleConstraintViolationException(ConstraintViolationException e, Model model) {
+        log.error("Constraint violation: {}", e.getMessage());
+        model.addAttribute("errorMessage", "There was an error processing your request. Please correct the highlighted fields and try again.");
+        return "profile";
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Validation error");
+    }
+
 
 }

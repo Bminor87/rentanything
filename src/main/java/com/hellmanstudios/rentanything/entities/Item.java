@@ -3,6 +3,7 @@ package com.hellmanstudios.rentanything.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import com.hellmanstudios.rentanything.dto.ItemDTO;
@@ -27,6 +28,7 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Length(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     @Column(name = "name", unique = true)
     private String name;
 
