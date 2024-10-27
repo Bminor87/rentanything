@@ -44,11 +44,11 @@ public class Item {
     @Column(name = "available")
     private boolean available = true;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_id", nullable = true)
     private Category category;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<Rental> rentals = new ArrayList<>();
 
     public Item() {
