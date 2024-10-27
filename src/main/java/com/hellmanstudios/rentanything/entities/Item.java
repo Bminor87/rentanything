@@ -2,6 +2,8 @@ package com.hellmanstudios.rentanything.entities;
 
 import org.hibernate.validator.constraints.Range;
 
+import com.hellmanstudios.rentanything.dto.ItemDTO;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -112,5 +114,9 @@ public class Item {
 
     public String priceFormatted() {
         return String.format("%.2f", price);
+    }
+
+    public ItemDTO toDTO() {
+        return new ItemDTO(id, name, description, price, image, available, category != null ? category.toDTO() : null);
     }
 }
