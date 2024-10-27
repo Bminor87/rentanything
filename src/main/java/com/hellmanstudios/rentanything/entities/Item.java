@@ -1,5 +1,8 @@
 package com.hellmanstudios.rentanything.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.validator.constraints.Range;
 
 import com.hellmanstudios.rentanything.dto.ItemDTO;
@@ -12,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
 
@@ -32,7 +36,6 @@ public class Item {
     @Pattern(regexp = "^$|^[\\w\\s-]+\\.(?i)(jpg|gif|png)$", message = "Invalid image URL")
     @Column(name = "image", nullable = true)
     private String image;
-       
 
     @Range(min=0, max=9999) 
     @Column(name = "price")
@@ -41,9 +44,12 @@ public class Item {
     @Column(name = "available")
     private boolean available = true;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", nullable = true)
     private Category category;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rental> rentals = new ArrayList<>();
 
     public Item() {
     }
@@ -114,6 +120,14 @@ public class Item {
 
     public String priceFormatted() {
         return String.format("%.2f", price);
+    }
+
+    public List<Rental> getRentals() {
+        return rentals;
+    }
+
+    public void setRentals(List<Rental> rentals) {
+        this.rentals = rentals;
     }
 
     public ItemDTO toDTO() {

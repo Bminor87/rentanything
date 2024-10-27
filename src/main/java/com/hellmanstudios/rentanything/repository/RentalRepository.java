@@ -11,4 +11,9 @@ public interface RentalRepository extends CrudRepository<Rental, Long> {
 
     @Query(value= "SELECT * FROM rentals WHERE user_id = :userId", nativeQuery = true)
     List<Rental> getItemsByUserId(@Param("userId") Long userId);
+
+    List<Rental> findByUserUsername(String username);
+
+    void deleteAllByUserUsername(String username);
+
 }

@@ -14,4 +14,6 @@ public interface ItemRepository extends CrudRepository<Item, Long> {
     @Query("SELECT i FROM Item i WHERE i.name iLIKE %:search% OR i.description iLIKE %:search%")
     List<Item> search(@Param("search") String search);
 
+    void deleteByName(String name);
+
 }

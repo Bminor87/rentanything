@@ -30,6 +30,7 @@ import jakarta.validation.Valid;
 import com.hellmanstudios.rentanything.repository.CategoryRepository;
 
 import java.util.List;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -108,18 +109,24 @@ public class WebController {
         return "profile";
     }
 
-    @PostMapping("/saveprofile")
+    @PostMapping("/profile")
     public String saveProfile(
         @AuthenticationPrincipal User user,
-        @ModelAttribute User updatedUser,
+        @Valid @ModelAttribute("user") User updatedUser,
+        BindingResult bindingResult,
         @RequestParam(required = false) String oldPassword,
         @RequestParam(required = false) String newPassword,
         @RequestParam(required = false) String confirmPassword,
         Model model) {
         
-        log.info("POST request to /saveprofile");
+        log.info("POST request to /profile");
         log.info("User: {}", user);
         log.info("Updated user: {}", updatedUser);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", updatedUser);
+            return "profile";
+        }
 
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
