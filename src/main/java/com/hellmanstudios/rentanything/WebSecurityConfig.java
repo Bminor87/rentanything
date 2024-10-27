@@ -13,10 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.Customizer;
 
 @Configuration
-@EnableMethodSecurity(securedEnabled = true)
+@EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfig {
 
     private static final AntPathRequestMatcher[] WHITE_LIST_URLS = {
@@ -46,13 +48,15 @@ public class WebSecurityConfig {
         .requestMatchers(antMatcher("/uploads/**")).permitAll()
         .requestMatchers(antMatcher("/files/**")).permitAll()
         .requestMatchers(antMatcher("/storage/**")).permitAll()
+        .requestMatchers(antMatcher("/api/users/**")).hasAuthority("ROLE_ADMIN")
         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-        .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
-        .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
-        .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
-        .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
+        .requestMatchers(HttpMethod.POST, "/api/**").hasAuthority("ROLE_ADMIN")
+        .requestMatchers(HttpMethod.PUT, "/api/**").hasAuthority("ROLE_ADMIN")
+        .requestMatchers(HttpMethod.DELETE, "/api/**").hasAuthority("ROLE_ADMIN")
+        .requestMatchers(antMatcher("/admin/**")).hasAuthority("ROLE_ADMIN")
         .requestMatchers(WHITE_LIST_URLS).permitAll()
         .anyRequest().authenticated())
+        .httpBasic(Customizer.withDefaults())
         .headers(headers -> 
         headers.frameOptions(frameOptions -> frameOptions 
                 .disable())) // for h2console

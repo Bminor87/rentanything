@@ -34,6 +34,7 @@ public class FileUploadTests {
 	@MockBean
 	private StorageService storageService;
 
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void should404WhenMissingFile() throws Exception {

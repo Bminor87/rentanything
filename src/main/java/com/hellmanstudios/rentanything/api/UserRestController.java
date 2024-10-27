@@ -4,14 +4,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.hellmanstudios.rentanything.repository.CategoryRepository;
+import com.hellmanstudios.rentanything.repository.UserRepository;
 
 @RestController
-@RequestMapping("/api/categories")
-public class CategoryRestController {
-
-    @Autowired
-    private CategoryRepository categoryRepository;
+@RequestMapping("/api/users")
+public class UserRestController {
     
+    @Autowired
+    private UserRepository userRepository;
 
 }
