@@ -7,6 +7,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ import com.hellmanstudios.rentanything.entities.Item;
 import com.hellmanstudios.rentanything.repository.ItemRepository;
 import com.hellmanstudios.rentanything.repository.CategoryRepository;
 
+@SpringBootTest
 @RunWith(SpringRunner.class)
 public class ItemRestControllerTest {
     
@@ -31,6 +34,11 @@ public class ItemRestControllerTest {
 
     @MockBean
     private ItemRestController itemRestController;
+
+    @BeforeAll
+    public static void setup() {
+        System.setProperty("SKIP_PROMPT", "true");
+    }
 
     // @Test
     // public void givenItems_whenGetItems_thenReturnJsonArray() throws Exception {

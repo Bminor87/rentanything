@@ -4,10 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 
@@ -48,8 +50,13 @@ public class RentanythingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(CategoryRepository categoryRepository, ItemRepository itemRepository, UserRepository userRepository, RentalRepository rentalRepository, RoleRepository roleRepository) {
+	public CommandLineRunner demo(CategoryRepository categoryRepository, ItemRepository itemRepository, UserRepository userRepository, RentalRepository rentalRepository, RoleRepository roleRepository,  @Value("${app.skipPrompt:false}") boolean skipPrompt) {
 		return (args) -> {
+
+			if (skipPrompt) {
+				System.out.println("Rent Anything is now up and running. 👌");
+				return;
+			}
 
 			System.out.println("Would you like to initialize the database with some sample data? (yes/no)");
 

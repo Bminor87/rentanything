@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,7 +24,7 @@ import com.hellmanstudios.rentanything.entities.Item;
 import com.hellmanstudios.rentanything.entities.Rental;
 import com.hellmanstudios.rentanything.entities.Role;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.profiles.active=test")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class RentalRepositoryTest {
