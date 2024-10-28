@@ -6,7 +6,10 @@ target/
 
 ### FILE UPLOADS ###
 /storage
+
+## ENVIRONMENT VARIABLES
 .env
+application-local.properties
 
 ### STS ###
 .apt_generated

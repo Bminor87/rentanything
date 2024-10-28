@@ -103,8 +103,8 @@
 		<dependency>
 			<groupId>me.paulschwarz</groupId>
 			<artifactId>spring-dotenv</artifactId>
-			<version>2.5.4</version>
-		  </dependency>
+			<version>2.2.0</version>
+		</dependency>
 		
 		
 	</dependencies>
