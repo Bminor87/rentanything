@@ -1,11 +1,13 @@
 package com.hellmanstudios.rentanything.storage;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("storage")
 public class StorageProperties {
 
-	private String location = "uploads";
+	@Value("${UPLOAD_DIR:uploads}")
+	private String location;
 
 	public String getLocation() {
 
